@@ -1,0 +1,65 @@
+.main__cards {
+  display: flex;
+  gap: 1.875rem;
+  margin: 1.25rem 1.25rem;
+}
+.cart,
+.card {
+  width: 200px !important;
+}
+/* First card */
+.cart {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 1.5625rem 1.25rem;
+  border-radius: 0.3125rem;
+  background: #ededed;
+  box-shadow: 0.125rem 0.125rem 0.5rem #ededed,
+    -0.1875rem -0.1875rem 0.5rem #11101d;
+}
+
+.card_inners {
+  border-bottom: #11101d 0.3125rem solid;
+}
+.card_inners .cart_title {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1.125rem;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+}
+.card_inners .cart_number {
+  color: #333300;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: bold;
+  font-size: 1.5625rem;
+  padding-bottom: 0.5rem;
+}
+/* Second card */
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 1.5625rem 1.25rem;
+  border-radius: 0.3125rem;
+  background: black;
+  box-shadow: 0.125rem 0.125rem 0.5rem #ededed,
+    -0.1875rem -0.1875rem 0.5rem #11101d;
+}
+
+.card_inner {
+  border-bottom: #fff 0.3125rem solid;
+}
+.card_inner .cart_title {
+  color: #ededed;
+  font-size: 1.125rem;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+}
+.card_inner .cart_number {
+  color: #fabb00;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: bold;
+  font-size: 1.5625rem;
+  padding-bottom: 0.5rem;
+}

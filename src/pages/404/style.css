@@ -1,0 +1,38 @@
+
+.notfound {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: #242a2b;
+}
+.notfound .title h1 {
+  font-family: "Rubik Mono One", sans-serif;
+  font-size: 10rem;
+  padding: 10rem 0 0;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.notfound .title h1 span {
+  margin: 0 1rem;
+}
+.notfound .title h1 span:nth-child(2) {
+  color: #fabb00;
+}
+.notfound .title h2 {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.notfound .button {
+  margin: 2rem 0;
+  padding: 0.4rem 3rem;
+  cursor: pointer;
+  font-family: "Bai Jamjuree", sans-serif !important;
+  font-size: 1.2rem;
+}
+.css-upywm-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: #fabb00;
+}

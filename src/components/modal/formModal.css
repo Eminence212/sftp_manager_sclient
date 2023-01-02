@@ -1,0 +1,21 @@
+.modal-footer .validate-btn {
+  background: #fabb00 !important;
+  border: 1px solid #fabb00 !important;
+  padding: 4px 8px !important;
+  font-size: 0.875rem !important;
+  outline: none !important;
+  box-shadow: 0 !important;
+}
+.modal-footer .validate-btn:hover {
+  filter: brightness(1.1) !important;
+}
+.modal-footer .cancel-btn {
+  background: #242a2b !important;
+  padding: 4px 8px !important;
+  font-size: 0.875rem !important;
+  outline: none !important;
+  box-shadow: 0 !important;
+}
+.modal-footer .cancel-btn :hover {
+  filter: brightness(1.1) !important;
+}

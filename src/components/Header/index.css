@@ -1,0 +1,19 @@
+#page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+#page-header .breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#page-header .breadcrumb .title {
+  color: #11101d;
+}
+#page-header .btns {
+  position: relative;
+  height: 6.25rem;
+}
