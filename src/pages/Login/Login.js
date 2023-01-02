@@ -16,11 +16,12 @@ import Copyright from "../../components/Copyright/Copyright";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ApiBase } from "../../utils/config/apiBase";
+
 import { dispatchLogin } from "../../redux/actions/authAction";
 
 import Loader from "../../components/Loader/Loader";
 import { message } from "../../components/Alert/Notification";
+import { ApiBase } from "../../utils/config/ApiBase";
 
 const initialState = {
   name: "",

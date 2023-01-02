@@ -37,6 +37,7 @@ const Dashboard = ({ open, setOpen }) => {
       setIsFetching(false);
     }, 1000);
   }, [token, auth.isAdmin, dispatch, auth.user.id]);
+
   return (
     <Wrapper open={open} setOpen={setOpen} title={"Tableau de bord"}>
       <Page>
@@ -79,9 +80,7 @@ const Dashboard = ({ open, setOpen }) => {
               />
               <div className="card_inners">
                 <p className="cart_title">
-                  {customers.length > 1
-                    ? "Clients blackistés"
-                    : "Client blackisté"}
+                  {customers.length > 1 ? "Clients" : "Client"}
                 </p>
                 <p>
                   <span className="cart_number">

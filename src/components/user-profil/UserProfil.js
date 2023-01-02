@@ -8,7 +8,7 @@ import profile from "../../assets/img/profile.png";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { isLength, isMatch } from "../../utils/validation";
-import { ApiBase } from "../../utils/config/apiBase";
+import { ApiBase } from "../../utils/config/ApiBase";
 const drawerWidth = 400;
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",

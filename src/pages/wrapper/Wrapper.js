@@ -2,7 +2,7 @@ import { Avatar, IconButton, Tooltip } from "@mui/material";
 import React from "react";
 import SideBar from "../../components/SideBar/SideBar";
 import UserProfil from "../../components/user-profil/UserProfil";
-import { ApiBase } from "../../utils/config/apiBase";
+import { ApiBase } from "../../utils/config/ApiBase";
 import profil from "../../assets/img/profile.png";
 import "./sytle.css";
 import { useSelector } from "react-redux";
