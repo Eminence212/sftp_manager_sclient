@@ -1,6 +1,8 @@
 import {
   Avatar,
   Box,
+  Button,
+  ButtonGroup,
   IconButton,
   Paper,
   Table,
@@ -21,21 +23,19 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import EditIcon from "@mui/icons-material/Edit";
-
+import PersonOffIcon from "@mui/icons-material/PersonOff";
+import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
-import { convertDate } from "../../../utils/Dates";
-import { useSelector } from "react-redux";
 import PersonIcon from "@mui/icons-material/Person";
-
-import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-
+import "./style.css";
+import ToggleSwitch from "../../../components/Toggle/ToggleSwitch";
 //Castomisation des styles
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#242a2b",
     color: "#fff",
     fontWeight: 400,
-    fontSize: 16,
+    fontSize: 14,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -119,8 +119,14 @@ TablePaginationActions.propTypes = {
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
 };
-const DataTable = ({ data, handleDelete, showData }) => {
-  const auth = useSelector((state) => state.auth);
+const DataTable = ({
+  data,
+  handleDelete,
+  showData,
+  handleDisable,
+  handleEnable,
+  handleValidation,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [record, setRecord] = useState([]);
@@ -133,6 +139,7 @@ const DataTable = ({ data, handleDelete, showData }) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   useEffect(() => {
     setRecord(
       rowsPerPage > 0
@@ -147,20 +154,51 @@ const DataTable = ({ data, handleDelete, showData }) => {
         <TableHead>
           <TableRow>
             <StyledTableCell align="center">#</StyledTableCell>
+            <StyledTableCell align="left">Name</StyledTableCell>
+            <StyledTableCell align="left">Host</StyledTableCell>
+            <StyledTableCell align="left">Port</StyledTableCell>
+            <StyledTableCell align="left">Inbound source path</StyledTableCell>
             <StyledTableCell align="left">
-              Nom, Post-Nom & Prénom
+              Inbound destination path
             </StyledTableCell>
-            <StyledTableCell align="left">Type</StyledTableCell>
-            <StyledTableCell align="left">Utilisateur</StyledTableCell>
-            <StyledTableCell align="left">Création</StyledTableCell>
-            <StyledTableCell align="left">Modification</StyledTableCell>
-
-            <StyledTableCell align="left">Options</StyledTableCell>
+            <StyledTableCell align="left">Outbound source path</StyledTableCell>
+            <StyledTableCell align="left">
+              Outbound destination path
+            </StyledTableCell>
+            <StyledTableCell align="left">Source error path</StyledTableCell>
+            <StyledTableCell align="left">
+              Destination error path
+            </StyledTableCell>
+            <StyledTableCell align="left">Source archive path</StyledTableCell>
+            <StyledTableCell align="left">
+              Destination archive path
+            </StyledTableCell>
+            <StyledTableCell align="left">Prefix</StyledTableCell>
+            <StyledTableCell align="left">Validation</StyledTableCell>
+            <StyledTableCell align="left">Status</StyledTableCell>
+            <StyledTableCell align="left">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {record.map((item, index) => {
-            const { id, name, Type, User, createdAt, updatedAt } = item;
+          {record.map((item) => {
+            const {
+              id,
+              name,
+              host,
+              port,
+              inbound,
+              inbound_amp,
+              outbound,
+              outbound_amp,
+              erreur,
+              erreur_amp,
+              archive,
+              archive_amp,
+              autovalidation,
+              enable,
+              response_slug,
+            } = item;
+
             return (
               <StyledTableRow
                 key={id}
@@ -182,45 +220,64 @@ const DataTable = ({ data, handleDelete, showData }) => {
                     <PersonIcon fontSize="small" />
                   </Avatar>
                 </TableCell>
-                <TableCell align="left">{name}</TableCell>
-
-                <TableCell align="left">{Type.description}</TableCell>
-                <TableCell align="left">{User.name}</TableCell>
-                <TableCell align="left">{convertDate(createdAt)}</TableCell>
-                <TableCell align="left">{convertDate(updatedAt)}</TableCell>
-
+                <TableCell align="left">{name.toUpperCase()}</TableCell>
+                <TableCell align="left">{host}</TableCell>
+                <TableCell align="left">{port}</TableCell>
+                <TableCell align="left">{inbound}</TableCell>
+                <TableCell align="left">{inbound_amp}</TableCell>
+                <TableCell align="left">{outbound}</TableCell>
+                <TableCell align="left">{outbound_amp}</TableCell>
+                <TableCell align="left">{erreur}</TableCell>
+                <TableCell align="left">{erreur_amp}</TableCell>
+                <TableCell align="left">{archive}</TableCell>
+                <TableCell align="left">{archive_amp}</TableCell>
+                <TableCell align="center">
+                  {response_slug ? response_slug : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  <ToggleSwitch
+                    id={id}
+                    name={name}
+                    autovalidation={autovalidation}
+                    handleValidation={handleValidation}
+                  />
+                </TableCell>
                 <TableCell align="left">
-                  {auth.isAdmin && (
-                    <Tooltip title="Supprimer" placement="top" arrow>
-                      <IconButton
-                        size="medium"
-                        sx={{
-                          color: "#242a2b",
-                        }}
-                        onClick={() => handleDelete({ id, name })}
-                      >
-                        <DeleteSweepIcon fontSize="inherit" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  <Tooltip title="Modifier" placement="top" arrow>
-                    <IconButton
-                      size="medium"
-                      sx={{
-                        color: "#242a2b",
-                      }}
-                      onClick={() =>
-                        showData({
-                          id,
-                          name,
-                          typeId: Type.id,
-                          userId: User.id,
-                        })
-                      }
-                    >
-                      <EditIcon fontSize="inherit" />
-                    </IconButton>
-                  </Tooltip>
+                  <span className={enable ? "mode mode_on" : "mode mode_off"}>
+                    {enable ? "Actif" : "Inactif"}
+                  </span>
+                </TableCell>
+                <TableCell align="left">
+                  <ButtonGroup size="small" id="btn_group">
+                    {enable && (
+                      <>
+                        <Button onClick={() => handleDelete({ id, name })}>
+                          <Tooltip title="Supprimer">
+                            <DeleteIcon fontSize="small" />
+                          </Tooltip>
+                        </Button>
+                        <Button onClick={() => showData(item)}>
+                          <Tooltip title="Modiffier">
+                            <EditIcon fontSize="small" />
+                          </Tooltip>
+                        </Button>
+                      </>
+                    )}
+
+                    {enable ? (
+                      <Button onClick={() => handleDisable({ id, name })}>
+                        <Tooltip title="Désactiver">
+                          <PersonOffIcon fontSize="small" />
+                        </Tooltip>
+                      </Button>
+                    ) : (
+                      <Button onClick={() => handleEnable({ id, name })}>
+                        <Tooltip title="Activer">
+                          <PersonIcon fontSize="small" />
+                        </Tooltip>
+                      </Button>
+                    )}
+                  </ButtonGroup>
                 </TableCell>
               </StyledTableRow>
             );

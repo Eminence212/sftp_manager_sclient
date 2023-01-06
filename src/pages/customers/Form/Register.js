@@ -16,7 +16,7 @@ import {
   Stack,
   IconButton,
 } from "@mui/material";
-import { utils, read } from "xlsx";
+
 import React, { forwardRef, useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -36,8 +36,6 @@ const Register = ({
   handleClose,
   handleSubmit,
   handleChangeInput,
-  readUploadFile,
-  handleSubmitMany,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -72,7 +70,7 @@ const Register = ({
 
         {/* Bigin */}
 
-        <Accordion
+        {/* <Accordion
           expanded={expanded === "panel1"}
           onChange={handleChange("panel1")}
         >
@@ -160,13 +158,13 @@ const Register = ({
                     hidden
                     type="file"
                     accept=".xlsx, .xls, .csv"
-                    onChange={readUploadFile}
+                    // onChange={readUploadFile}
                   />
                 </Button>
               </Stack>
             </ThemeProvider>
           </AccordionDetails>
-        </Accordion>
+        </Accordion> */}
 
         {/* End */}
       </DialogContent>
@@ -182,7 +180,7 @@ const Register = ({
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleSubmitMany}
+                // onClick={handleSubmitMany}
               >
                 Sauvegarder
               </Button>

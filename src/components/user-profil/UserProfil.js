@@ -9,6 +9,9 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { isLength, isMatch } from "../../utils/validation";
 import { ApiBase } from "../../utils/config/ApiBase";
+import Loader from "../Loader/Loader";
+import { message } from "../Alert/Notification";
+import { useNavigate } from "react-router-dom";
 const drawerWidth = 400;
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -30,10 +33,12 @@ const initialState = {
 
 const UserProfil = ({ open, handleDrawerClose, auth }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const token = useSelector((state) => state.token);
   const [user, setUser] = useState(initialState);
   const { id, name, role, password, cf_password, err, success } = user;
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
   const [passwordConfirmShown, setPasswordConfirmShown] = useState(false);
 
@@ -41,6 +46,10 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value, err: "", success: "" });
+  };
+  const handleClose = () => {
+    setUser(initialState);
+    handleDrawerClose();
   };
   useEffect(() => {
     setUser({
@@ -51,6 +60,8 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
       role: auth.user.role,
       password: "",
       cf_password: "",
+      err: "",
+      success: "",
     });
   }, [auth]);
   const handleShowpwd1 = (e) => {
@@ -80,7 +91,7 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
     try {
       setIsLoading(true);
 
-      await ApiBase.post(
+      const rep = await ApiBase.post(
         "/user/reset",
         {
           password,
@@ -90,6 +101,7 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
           headers: { Authorization: token },
         }
       );
+
       setTimeout(async () => {
         setIsLoading(false);
         setUser({
@@ -99,7 +111,6 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
           err: "",
           success: "Mot de passe modifié avec succès.",
         });
-        // history.push("/dashboard");
       }, 1000);
     } catch (error) {
       setUser({ ...user, err: error.response.data.msg, success: "" });
@@ -120,6 +131,9 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
       open={open}
       className="offcanvas"
     >
+      <Loader displayed={isLoading} />
+      {!isLoading && err ? message(err, "error") : ""}
+      {!isLoading && success ? message(success, "success") : ""}
       <DrawerHeader className="offcanvas-header">
         <h5 className="offcanvas-title" id="user-profile-label">
           <IconButton className="span">
@@ -127,10 +141,7 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
           </IconButton>
           Paramètres du profil
         </h5>
-        <IconButton
-          className="btn-close text-reset"
-          onClick={handleDrawerClose}
-        >
+        <IconButton className="btn-close text-reset" onClick={handleClose}>
           {theme.direction === "rtl" ? <ChevronLeftIcon /> : <CloseIcon />}
         </IconButton>
       </DrawerHeader>

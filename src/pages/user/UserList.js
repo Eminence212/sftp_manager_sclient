@@ -13,7 +13,7 @@ import {
   fetchAllUsers,
 } from "../../redux/actions/usersAction";
 import { isEmpty, isLength, isMatch } from "../../utils/validation";
-import { ApiBase } from "../../utils/config/apiBase";
+import { ApiBase } from "../../utils/config/ApiBase";
 import { useNavigate } from "react-router-dom";
 import DataTable from "./Table/DataTable";
 import Register from "./Form/Register";
@@ -375,7 +375,6 @@ const UserList = ({ open, setOpen }) => {
     });
     setShow(true);
   };
-
   return (
     <Wrapper open={open} setOpen={setOpen} title={"Utilisateurs"}>
       <Page>
@@ -392,7 +391,7 @@ const UserList = ({ open, setOpen }) => {
         </PageHeader>
         {!isFetching ? (
           <DataTable
-            data={users}
+            data={users.filter((item) => item.id !== auth.user.id)}
             handleDelete={handleDelete}
             showData={showDataToEdit}
             handleDisable={handleDisable}

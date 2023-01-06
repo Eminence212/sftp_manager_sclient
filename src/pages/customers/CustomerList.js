@@ -9,21 +9,17 @@ import {
   fetchAllCustomers,
   searchCustomers,
 } from "../../redux/actions/customersAction";
-import {
-  fetchAllTypes,
-  dispatchGetAllTypes,
-} from "../../redux/actions/typeAction";
-import { dispatchGetAllUsers } from "../../redux/actions/usersAction";
+
 import Loader from "../../components/Loader/Loader";
 import { message } from "../../components/Alert/Notification";
 import PageHeader from "../../components/Header/PageHeader";
 import GroupIcon from "@mui/icons-material/Group";
 import Register from "./Form/Register";
 import { isEmpty } from "../../utils/validation";
-import { ApiBase } from "../../utils/config/apiBase";
+import { ApiBase } from "../../utils/config/ApiBase";
 import swal from "@sweetalert/with-react";
 import DataTable from "./Table/DataTable";
-import { read, utils } from "xlsx";
+
 const initialState = {
   id: 0,
   name: "",
@@ -72,17 +68,12 @@ const CustomerList = ({ open, setOpen, match }) => {
     });
   };
 
-
-
   const fetchData = async () => {
     const response = await fetchAllCustomers(token);
     dispatch(dispatchGetAllCustomers(response));
-    const res = await fetchAllTypes(token);
-    dispatch(dispatchGetAllTypes(res));
   };
   const searchData = async (q) => {
     const response = await searchCustomers(token, q);
-    console.log({ response });
     dispatch(dispatchGetAllCustomers(response));
     return response;
   };
@@ -216,49 +207,7 @@ const CustomerList = ({ open, setOpen, match }) => {
       }
     }
   };
-  const handleSubmitMany = async (e) => {
-    e.preventDefault();
-    if (customer.lot <= 0)
-      return setCustomer({
-        ...customer,
-        err: "Veuillez sélectionner la liste des clients.",
-        success: "",
-      });
 
-    try {
-      setIsLoading(true);
-      handleClose();
-
-      const res = await ApiBase.post(
-        "/customer/add/many",
-        {
-          customers: formatCustomer(customer),
-        },
-        {
-          headers: { Authorization: token },
-        }
-      );
-      console.log({ res });
-      setTimeout(async () => {
-        setIsLoading(false);
-        setCallback(!callback);
-        setCustomer({
-          ...customer,
-          err: "",
-          success: res.data.msg,
-        });
-      }, 1000);
-    } catch (error) {
-      setIsLoading(false);
-
-      error.response.data.msg &&
-        setCustomer({
-          ...customer,
-          err: error.response.data.msg,
-          success: "",
-        });
-    }
-  };
   const destroy = async (id) => {
     try {
       setIsLoading(true);
@@ -319,40 +268,173 @@ const CustomerList = ({ open, setOpen, match }) => {
     });
     setShow(true);
   };
-  const readUploadFile = (e) => {
-    e.preventDefault();
-    if (e.target.files) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = e.target.result;
-        const workbook = read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const json = utils.sheet_to_json(worksheet);
+  const Disable = async (id) => {
+    try {
+      setIsLoading(true);
+      const res = await ApiBase.patch(
+        `/customer/enable/${id}`,
+        { enable: false },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      setCallback(!callback);
+      setTimeout(() => {
+        setIsLoading(false);
+        setCallback(!callback);
 
-        setCustomer({ ...customer, lot: json });
-        setIsSave(json.length > 0);
-      };
-      reader.readAsArrayBuffer(e.target.files[0]);
+        setCustomer({
+          ...customer,
+          err: "",
+          success: res.data.msg,
+        });
+      }, 1000);
+    } catch (error) {
+      setIsLoading(false);
+      error.response.data.msg &&
+        setCustomer({
+          ...customer,
+          err: error.response.data.msg,
+          success: "",
+        });
     }
   };
-
-  const formatCustomer = (data) => {
-    const { userId, lot } = data;
-
-    return lot.map((value) => {
-      const typeIdOld = types.filter(
-        (type) => type.description.toLowerCase() === value.Type.toLowerCase()
+  const Enable = async (id) => {
+    try {
+      setIsLoading(true);
+      const res = await ApiBase.patch(
+        `/customer/enable/${id}`,
+        { enable: true },
+        {
+          headers: { Authorization: token },
+        }
       );
+      setCallback(!callback);
+      setTimeout(() => {
+        setIsLoading(false);
+        setCallback(!callback);
 
-      return {
-        name: value.Nom.toUpperCase(),
-        userId,
-        typeId: typeIdOld[0].id,
-      };
+        setCustomer({
+          ...customer,
+          err: "",
+          success: res.data.msg,
+        });
+      }, 1000);
+    } catch (error) {
+      setIsLoading(false);
+      error.response.data.msg &&
+        setCustomer({
+          ...customer,
+          err: error.response.data.msg,
+          success: "",
+        });
+    }
+  };
+  const Validate = async (id, autovalidation) => {
+    try {
+      setIsLoading(true);
+      const res = await ApiBase.patch(
+        `/customer/validation/${id}`,
+        { autovalidation: !autovalidation },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      setCallback(!callback);
+      setTimeout(() => {
+        setIsLoading(false);
+        setCallback(!callback);
+
+        setCustomer({
+          ...customer,
+          err: "",
+          success: res.data.msg,
+        });
+      }, 1000);
+    } catch (error) {
+      setIsLoading(false);
+      error.response.data.msg &&
+        setCustomer({
+          ...customer,
+          err: error.response.data.msg,
+          success: "",
+        });
+    }
+  };
+  const handleDisable = async (data) => {
+    swal("Êtes-vous sûr de vouloir désctiver :\n " + data.name + " ? ", {
+      buttons: {
+        cancel: "Non",
+        yes: {
+          text: "Oui",
+          value: "yes",
+        },
+      },
+      closeOnClickOutside: false,
+      closeOnEsc: false,
+    }).then((value) => {
+      switch (value) {
+        case "yes":
+          Disable(data.id);
+          break;
+        default:
+          message("Désactivation annulée !", "info");
+          navigate("/customers");
+      }
     });
   };
-
+  const handleEnable = async (data) => {
+    swal(
+      "Êtes-vous sûr de vouloir activer le compte de :\n " + data.name + " ? ",
+      {
+        buttons: {
+          cancel: "Non",
+          yes: {
+            text: "Oui",
+            value: "yes",
+          },
+        },
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      }
+    ).then((value) => {
+      switch (value) {
+        case "yes":
+          Enable(data.id);
+          break;
+        default:
+          message("Activation annulée !", "info");
+          navigate("/customers");
+      }
+    });
+  };
+  const handleValidation = async (data) => {
+    swal(
+      "Êtes-vous sûr de vouloir modifier le mode de traitement de :\n " +
+        data.name.toUpperCase() +
+        " ? ",
+      {
+        buttons: {
+          cancel: "Non",
+          yes: {
+            text: "Oui",
+            value: "yes",
+          },
+        },
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      }
+    ).then((value) => {
+      switch (value) {
+        case "yes":
+          Validate(data.id, data.autovalidation);
+          break;
+        default:
+          message("Modification annulée !", "info");
+          navigate("/customers");
+      }
+    });
+  };
   return (
     <Wrapper open={open} setOpen={setOpen} title={"Liste des clients"}>
       <Page>
@@ -371,6 +453,9 @@ const CustomerList = ({ open, setOpen, match }) => {
             data={customers}
             handleDelete={handleDelete}
             showData={showDataToEdit}
+            handleDisable={handleDisable}
+            handleEnable={handleEnable}
+            handleValidation={handleValidation}
           />
         ) : (
           ""
@@ -384,8 +469,6 @@ const CustomerList = ({ open, setOpen, match }) => {
           handleClose={handleClose}
           handleSubmit={handleSubmit}
           handleChangeInput={handleChangeInput}
-          readUploadFile={readUploadFile}
-          handleSubmitMany={handleSubmitMany}
         />
       </Page>
     </Wrapper>

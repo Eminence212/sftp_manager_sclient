@@ -159,7 +159,7 @@ const DataTable = ({
         : data
     );
   }, [page, rowsPerPage, data]);
-
+  console.log({ auth });
   return (
     <TableContainer component={Paper}>
       <Table stickyHeader aria-label="sticky table">

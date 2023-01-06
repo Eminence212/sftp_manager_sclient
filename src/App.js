@@ -3,6 +3,8 @@ import Login from "./pages/Login/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "./pages/404/NotFound";
 import Dashboard from "./pages/dashboard/Dashboard";
+import CustomerList from "./pages/customers/CustomerList";
+import UserList from "./pages/user/UserList";
 import { ApiBase } from "./utils/config/ApiBase";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -56,7 +58,7 @@ function App() {
             isLogged ? <Dashboard open={open} setOpen={setOpen} /> : <Login />
           }
         />
-        {/* <Route
+        <Route
           exact
           path="/customers/:query"
           element={
@@ -78,6 +80,7 @@ function App() {
             )
           }
         />
+
         <Route
           exact
           path="/users"
@@ -92,7 +95,7 @@ function App() {
               <Login />
             )
           }
-        /> */}
+        />
       </Routes>
     </BrowserRouter>
   );
