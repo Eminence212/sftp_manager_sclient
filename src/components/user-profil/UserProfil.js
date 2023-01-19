@@ -33,12 +33,12 @@ const initialState = {
 
 const UserProfil = ({ open, handleDrawerClose, auth }) => {
   const theme = useTheme();
-  const navigate = useNavigate();
+
   const token = useSelector((state) => state.token);
   const [user, setUser] = useState(initialState);
-  const { id, name, role, password, cf_password, err, success } = user;
+  const { id, name, password, cf_password, err, success } = user;
   const [isLoading, setIsLoading] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
+
   const [passwordShown, setPasswordShown] = useState(false);
   const [passwordConfirmShown, setPasswordConfirmShown] = useState(false);
 
@@ -91,7 +91,7 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
     try {
       setIsLoading(true);
 
-      const rep = await ApiBase.post(
+    await ApiBase.post(
         "/user/reset",
         {
           password,

@@ -9,6 +9,7 @@ export const fetchAllUsers = async (token) => {
   return res;
 };
 export const dispatchGetAllUsers = (res) => {
+
   return {
     type: ACTIONS.GET_ALL_USERS,
     payload: res.data,

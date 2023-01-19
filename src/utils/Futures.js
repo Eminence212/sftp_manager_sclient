@@ -17,7 +17,7 @@ export const numStr = (a, b) => {
     a = a.substr(1);
   }
   for (let i = a.length - 1; i >= 0; i--) {
-    c = d != 0 && d % 3 == 0 ? a[i] + b + c : a[i] + c;
+    c = d !== 0 && d % 3 === 0 ? a[i] + b + c : a[i] + c;
     d++;
   }
   return c;

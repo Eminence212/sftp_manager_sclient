@@ -1,14 +1,8 @@
 import {
   Avatar,
   Box,
-  Button,
-  ButtonGroup,
   IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -31,15 +25,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import PropTypes from "prop-types";
 import { convertDate } from "../../../utils/Dates";
 import { getStatus } from "../../../utils/Futures";
-import { Logout, Person, Settings } from "@mui/icons-material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+
 import PersonOffIcon from "@mui/icons-material/PersonOff";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+
 import { useSelector } from "react-redux";
 import PersonIcon from "@mui/icons-material/Person";
-import AlarmIcon from "@mui/icons-material/Alarm";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
 //Castomisation des styles

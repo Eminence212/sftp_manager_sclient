@@ -2,7 +2,6 @@ import "./dashboard.css";
 
 import Wrapper from "../wrapper/Wrapper";
 import Page from "../../components/layaout-page/Page";
-import logo from "../../assets/img/customers.png";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import { numStr } from "../../utils/Futures";
@@ -21,7 +20,11 @@ const Dashboard = ({ open, setOpen }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.token);
-  const customers = useSelector((state) => state.customers);
+  const customers = useSelector((state) =>
+    auth.isAdmin
+      ? state.customers
+      : state.customers.filter((item) => item.User.id === auth.user.id)
+  );
   const users = useSelector((state) => state.users);
   const [isFetching, setIsFetching] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +61,7 @@ const Dashboard = ({ open, setOpen }) => {
                 />
                 <div className="card_inner">
                   <p className="cart_title">
-                    {`Utilisateur${users.length > 1 && "s"}`}
+                    {`Utilisateur${users.length > 1 ? "s" : ""}`}
                   </p>
                   <p>
                     <span className="cart_number">{numStr(users.length)}</span>

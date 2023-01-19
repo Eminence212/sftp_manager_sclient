@@ -15,7 +15,7 @@ import { message } from "../../components/Alert/Notification";
 import PageHeader from "../../components/Header/PageHeader";
 import GroupIcon from "@mui/icons-material/Group";
 import Register from "./Form/Register";
-import { isEmpty } from "../../utils/validation";
+
 import { ApiBase } from "../../utils/config/ApiBase";
 import swal from "@sweetalert/with-react";
 import DataTable from "./Table/DataTable";
@@ -23,9 +23,20 @@ import DataTable from "./Table/DataTable";
 const initialState = {
   id: 0,
   name: "",
-  typeId: 0,
+  host: "",
+  port: "",
+  username: "",
+  password: "",
+  inbound: "",
+  outbound: "",
+  erreur: "",
+  archive: "",
+  inbound_amp: "",
+  outbound_amp: "",
+  erreur_amp: "",
+  archive_amp: "",
+  response_slug: "",
   userId: 0,
-  lot: [],
   err: "",
   success: "",
 };
@@ -36,8 +47,12 @@ const CustomerList = ({ open, setOpen, match }) => {
   const { query } = useParams();
   const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.token);
-  const customers = useSelector((state) => state.customers);
-  const types = useSelector((state) => state.types);
+
+  const customers = useSelector((state) =>
+    auth.isAdmin
+      ? state.customers
+      : state.customers.filter((item) => item.User.id === auth.user.id)
+  );
   const [isFetching, setIsFetching] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [callback, setCallback] = useState(false);
@@ -49,7 +64,25 @@ const CustomerList = ({ open, setOpen, match }) => {
     userId: auth.user.id,
   });
 
-  const { name, typeId, userId, err, success } = customer;
+  const {
+    name,
+    host,
+    port,
+    username,
+    password,
+    inbound,
+    inbound_amp,
+    outbound,
+    outbound_amp,
+    archive,
+    archive_amp,
+    erreur,
+    erreur_amp,
+    response_slug,
+    userId,
+    err,
+    success,
+  } = customer;
 
   const handleClose = () => {
     setShow(false);
@@ -89,6 +122,7 @@ const CustomerList = ({ open, setOpen, match }) => {
       });
     }, 1000);
   }, [token, auth.isAdmin, dispatch, callback, auth.user.id]);
+
   useEffect(() => {
     setIsSearched(query !== undefined);
     searchData(query);
@@ -96,10 +130,10 @@ const CustomerList = ({ open, setOpen, match }) => {
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
-    console.log({ name, value });
+
     setCustomer({
       ...customer,
-      [name]: name !== "typeId" ? value : parseInt(value),
+      [name]: value,
       err: "",
       success: "",
     });
@@ -109,28 +143,26 @@ const CustomerList = ({ open, setOpen, match }) => {
 
     if (customer.id === 0) {
       // Add
-      if (isEmpty(name))
-        return setCustomer({
-          ...customer,
-          err: "Veuillez saisir le nom du client.",
-          success: "",
-        });
-      if (isEmpty(typeId))
-        return setCustomer({
-          ...customer,
-          err: "Veuillez sélectionner le type de client",
-          success: "",
-        });
-
       try {
         setIsLoading(true);
         handleClose();
-
         const res = await ApiBase.post(
           "/customer/add",
           {
             name,
-            typeId,
+            inbound,
+            inbound_amp,
+            outbound,
+            outbound_amp,
+            erreur,
+            erreur_amp,
+            archive,
+            archive_amp,
+            host,
+            port,
+            username,
+            password,
+            response_slug,
             userId,
           },
           {
@@ -148,7 +180,7 @@ const CustomerList = ({ open, setOpen, match }) => {
         }, 1000);
       } catch (error) {
         setIsLoading(false);
-
+        console.log({ error });
         error.response.data.msg &&
           setCustomer({
             ...customer,
@@ -158,18 +190,7 @@ const CustomerList = ({ open, setOpen, match }) => {
       }
     } else {
       // Update
-      if (isEmpty(name))
-        return setCustomer({
-          ...customer,
-          err: "Veuillez saisir le nom du client.",
-          success: "",
-        });
-      if (isEmpty(typeId))
-        return setCustomer({
-          ...customer,
-          err: "Veuillez sélectionner le type de client",
-          success: "",
-        });
+      console.log({ customer });
       try {
         setIsLoading(true);
         setShow(false);
@@ -177,14 +198,25 @@ const CustomerList = ({ open, setOpen, match }) => {
           `/customer/update/${customer.id}`,
           {
             name,
-            typeId,
+            inbound,
+            inbound_amp,
+            outbound,
+            outbound_amp,
+            erreur,
+            erreur_amp,
+            archive,
+            archive_amp,
+            host,
+            port,
+            username,
+            password,
+            response_slug,
             userId,
           },
           {
             headers: { Authorization: token },
           }
         );
-
         setTimeout(async () => {
           setIsLoading(false);
           setCallback(!callback);
@@ -197,7 +229,6 @@ const CustomerList = ({ open, setOpen, match }) => {
         }, 1000);
       } catch (error) {
         setIsLoading(false);
-
         error.response.data.msg &&
           setCustomer({
             ...customer,
@@ -208,12 +239,15 @@ const CustomerList = ({ open, setOpen, match }) => {
     }
   };
 
-  const destroy = async (id) => {
+  const destroy = async (data) => {
+    const { id, username } = data;
+
     try {
       setIsLoading(true);
-      const res = await ApiBase.delete(`/customer/delete/${id}`, {
+      const res = await ApiBase.delete(`/customer/delete/${id}/${username}`, {
         headers: { Authorization: token },
       });
+      console.log({ username });
       setCallback(!callback);
       setTimeout(() => {
         setIsLoading(false);
@@ -226,6 +260,7 @@ const CustomerList = ({ open, setOpen, match }) => {
       }, 1000);
     } catch (error) {
       setIsLoading(false);
+      console.log({ error });
       error.response.data.msg &&
         setCustomer({
           ...customer,
@@ -248,7 +283,7 @@ const CustomerList = ({ open, setOpen, match }) => {
     }).then((value) => {
       switch (value) {
         case "yes":
-          destroy(data.id);
+          destroy(data);
           break;
         default:
           message("Suppression annulée !", "info");
@@ -256,13 +291,10 @@ const CustomerList = ({ open, setOpen, match }) => {
       }
     });
   };
-  const showDataToEdit = ({ id, name, typeId, userId }) => {
+  const showDataToEdit = (item) => {
     setCustomer({
       ...customer,
-      id: id,
-      name: name,
-      typeId,
-      userId,
+      ...item,
       err: "",
       success: "",
     });
@@ -449,6 +481,7 @@ const CustomerList = ({ open, setOpen, match }) => {
           <GroupIcon fontSize="large" />
         </PageHeader>
         {!isFetching ? (
+     
           <DataTable
             data={customers}
             handleDelete={handleDelete}
@@ -462,13 +495,14 @@ const CustomerList = ({ open, setOpen, match }) => {
         )}
         <Register
           customer={customer}
-          types={types}
           show={show}
           auth={auth}
           isSave={isSave}
           handleClose={handleClose}
           handleSubmit={handleSubmit}
           handleChangeInput={handleChangeInput}
+          setIsSave={setIsSave}
+          setCustomer={setCustomer}
         />
       </Page>
     </Wrapper>

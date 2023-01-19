@@ -36,7 +36,7 @@ const Register = ({
       },
     },
   });
-  const { id, name, password, cf_password, role, err, success } = user;
+  const { id, name, password, cf_password, role } = user;
 
   return (
     <Dialog

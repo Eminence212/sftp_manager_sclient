@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-const ToggleSwitch = ({ handleValidation, id, autovalidation,name }) => {
+const ToggleSwitch = ({ handleValidation, id, autovalidation, name }) => {
   const [checked, setChecked] = useState(false);
 
-  const handleChange = () => {
-    handleValidation({id, autovalidation,name});
-    // setChecked(!checked);
+  const handleSwitchChange = () => {
+    handleValidation({ id, autovalidation, name });
+    setChecked(autovalidation);
   };
   useEffect(() => {
     setChecked(autovalidation);
@@ -13,12 +13,16 @@ const ToggleSwitch = ({ handleValidation, id, autovalidation,name }) => {
 
   return (
     <div className="toggle_switch">
-      <label> {!checked && "Manuel"} </label>
+      <label> {!checked || !autovalidation ? "Manuel" : ""} </label>
       <label class="switch">
-        <input onClick={handleChange} type="checkbox" checked={checked} />
+        <input
+          onClick={handleSwitchChange}
+          type="checkbox"
+          defaultChecked={checked}
+        />
         <span class="slider round"></span>
       </label>
-      <label>{checked && "Auto"}</label>
+      <label>{checked || autovalidation ? "Auto" : ""}</label>
     </div>
   );
 };

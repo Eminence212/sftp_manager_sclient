@@ -193,7 +193,7 @@ const UserList = ({ open, setOpen }) => {
     try {
       const { user } = auth;
       if (user.id === id) {
-        message("Impossible de vous désactiver !", "warning");
+        message("Impossible de vous supprimer !", "warning");
         navigate("/users");
       } else {
         setIsLoading(true);

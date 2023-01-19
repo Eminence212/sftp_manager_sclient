@@ -3,8 +3,11 @@ import {
   Box,
   Button,
   ButtonGroup,
+  FormControlLabel,
+  FormGroup,
   IconButton,
   Paper,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -28,7 +31,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
 import PersonIcon from "@mui/icons-material/Person";
 import "./style.css";
-import ToggleSwitch from "../../../components/Toggle/ToggleSwitch";
+
 //Castomisation des styles
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,6 +51,39 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
+  },
+}));
+
+const Android12Switch = styled(Switch)(({ theme }) => ({
+  padding: 8,
+  "& .MuiSwitch-track": {
+    borderRadius: 22 / 2,
+    "&:before, &:after": {
+      content: '""',
+      position: "absolute",
+      top: "50%",
+      transform: "translateY(-50%)",
+      width: 16,
+      height: 16,
+    },
+    "&:before": {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+      left: 12,
+    },
+    "&:after": {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+      right: 12,
+    },
+  },
+  "& .MuiSwitch-thumb": {
+    boxShadow: "none",
+    width: 16,
+    height: 16,
+    margin: 2,
   },
 }));
 //Pagination
@@ -180,12 +216,13 @@ const DataTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {record.map((item) => {
+          {record.map((item, index) => {
             const {
               id,
               name,
               host,
               port,
+              username,
               inbound,
               inbound_amp,
               outbound,
@@ -198,7 +235,6 @@ const DataTable = ({
               enable,
               response_slug,
             } = item;
-
             return (
               <StyledTableRow
                 key={id}
@@ -235,12 +271,20 @@ const DataTable = ({
                   {response_slug ? response_slug : "-"}
                 </TableCell>
                 <TableCell align="center">
-                  <ToggleSwitch
-                    id={id}
-                    name={name}
-                    autovalidation={autovalidation}
-                    handleValidation={handleValidation}
-                  />
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Android12Switch
+                          sx={{ m: 1 }}
+                          checked={autovalidation}
+                          onClick={() =>
+                            handleValidation({ id, autovalidation, name })
+                          }
+                        />
+                      }
+                      label={autovalidation ? 'Auto':'Manuel'}
+                    />
+                  </FormGroup>
                 </TableCell>
                 <TableCell align="left">
                   <span className={enable ? "mode mode_on" : "mode mode_off"}>
@@ -251,7 +295,9 @@ const DataTable = ({
                   <ButtonGroup size="small" id="btn_group">
                     {enable && (
                       <>
-                        <Button onClick={() => handleDelete({ id, name })}>
+                        <Button
+                          onClick={() => handleDelete({ id, name, username })}
+                        >
                           <Tooltip title="Supprimer">
                             <DeleteIcon fontSize="small" />
                           </Tooltip>

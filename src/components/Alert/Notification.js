@@ -1,4 +1,3 @@
-import React from "react";
 import swal from "@sweetalert/with-react";
 
 export const message = (text, icon) => {

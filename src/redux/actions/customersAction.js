@@ -5,6 +5,7 @@ export const fetchAllCustomers = async (token) => {
   const res = await ApiBase.get("/customer", {
     headers: { Authorization: token },
   });
+
   return res;
 };
 export const searchCustomers = async (token, query) => {
