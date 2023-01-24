@@ -9,6 +9,7 @@ import { ApiBase } from "./utils/config/ApiBase";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { dispatchGetUser, fetchUser } from "./redux/actions/authAction";
+import Validation from "./components/Validation/Validation";
 function App() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
@@ -95,6 +96,13 @@ function App() {
             ) : (
               <Login />
             )
+          }
+        />
+        <Route
+          exact
+          path="/validation"
+          element={
+            isLogged ? isAdmin ? <Validation /> : <NotFound /> : <Login />
           }
         />
       </Routes>

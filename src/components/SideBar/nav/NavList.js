@@ -2,6 +2,7 @@ import React from "react";
 import menus from "./menu";
 import profile from "../../../assets/img/profile.png";
 import { Link } from "react-router-dom";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 const Item = ({ id, icon, label, path }) => {
   return (
     <li>
@@ -46,6 +47,14 @@ const NavList = ({
       {menus.map((menu) => (
         <Item key={menu.id} {...menu} active={active} auth={auth} />
       ))}
+    
+      <li>
+        <Link to={"/validation"}>
+          <i className={`bx bx-list-check`}></i>
+          <span className="links_name">Intégration</span>
+        </Link>
+        <span className="tooltip">Intégration</span>
+      </li>
       {auth.isAdmin && (
         <li>
           <Link to={"/users"}>

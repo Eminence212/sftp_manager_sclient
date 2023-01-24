@@ -162,6 +162,7 @@ const DataTable = ({
   handleDisable,
   handleEnable,
   handleValidation,
+  isAdmin,
 }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -210,9 +211,15 @@ const DataTable = ({
               Destination archive path
             </StyledTableCell>
             <StyledTableCell align="left">Prefix</StyledTableCell>
-            <StyledTableCell align="left">Validation</StyledTableCell>
-            <StyledTableCell align="left">Status</StyledTableCell>
-            <StyledTableCell align="left">Actions</StyledTableCell>
+            {isAdmin ? (
+              <>
+                <StyledTableCell align="left">Validation</StyledTableCell>
+                <StyledTableCell align="left">Status</StyledTableCell>
+                <StyledTableCell align="left">Actions</StyledTableCell>
+              </>
+            ) : (
+              ""
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -270,61 +277,71 @@ const DataTable = ({
                 <TableCell align="center">
                   {response_slug ? response_slug : "-"}
                 </TableCell>
-                <TableCell align="center">
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Android12Switch
-                          sx={{ m: 1 }}
-                          checked={autovalidation}
-                          onClick={() =>
-                            handleValidation({ id, autovalidation, name })
+                {isAdmin ? (
+                  <>
+                    <TableCell align="center">
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Android12Switch
+                              sx={{ m: 1 }}
+                              checked={autovalidation}
+                              onClick={() =>
+                                handleValidation({ id, autovalidation, name })
+                              }
+                            />
                           }
+                          label={autovalidation ? "Auto" : "Manuel"}
                         />
-                      }
-                      label={autovalidation ? 'Auto':'Manuel'}
-                    />
-                  </FormGroup>
-                </TableCell>
-                <TableCell align="left">
-                  <span className={enable ? "mode mode_on" : "mode mode_off"}>
-                    {enable ? "Actif" : "Inactif"}
-                  </span>
-                </TableCell>
-                <TableCell align="left">
-                  <ButtonGroup size="small" id="btn_group">
-                    {enable && (
-                      <>
-                        <Button
-                          onClick={() => handleDelete({ id, name, username })}
-                        >
-                          <Tooltip title="Supprimer">
-                            <DeleteIcon fontSize="small" />
-                          </Tooltip>
-                        </Button>
-                        <Button onClick={() => showData(item)}>
-                          <Tooltip title="Modiffier">
-                            <EditIcon fontSize="small" />
-                          </Tooltip>
-                        </Button>
-                      </>
-                    )}
+                      </FormGroup>
+                    </TableCell>
+                    <TableCell align="left">
+                      <span
+                        className={enable ? "mode mode_on" : "mode mode_off"}
+                      >
+                        {enable ? "Actif" : "Inactif"}
+                      </span>
+                    </TableCell>
+                    <TableCell align="left">
+                      <ButtonGroup size="small" id="btn_group">
+                        {enable && (
+                          <>
+                            <Button
+                              onClick={() =>
+                                handleDelete({ id, name, username })
+                              }
+                            >
+                              <Tooltip title="Supprimer">
+                                <DeleteIcon fontSize="small" />
+                              </Tooltip>
+                            </Button>
+                            <Button onClick={() => showData(item)}>
+                              <Tooltip title="Modiffier">
+                                <EditIcon fontSize="small" />
+                              </Tooltip>
+                            </Button>
+                          </>
+                        )}
 
-                    {enable ? (
-                      <Button onClick={() => handleDisable({ id, name })}>
-                        <Tooltip title="Désactiver">
-                          <PersonOffIcon fontSize="small" />
-                        </Tooltip>
-                      </Button>
-                    ) : (
-                      <Button onClick={() => handleEnable({ id, name })}>
-                        <Tooltip title="Activer">
-                          <PersonIcon fontSize="small" />
-                        </Tooltip>
-                      </Button>
-                    )}
-                  </ButtonGroup>
-                </TableCell>
+                        {enable ? (
+                          <Button onClick={() => handleDisable({ id, name })}>
+                            <Tooltip title="Désactiver">
+                              <PersonOffIcon fontSize="small" />
+                            </Tooltip>
+                          </Button>
+                        ) : (
+                          <Button onClick={() => handleEnable({ id, name })}>
+                            <Tooltip title="Activer">
+                              <PersonIcon fontSize="small" />
+                            </Tooltip>
+                          </Button>
+                        )}
+                      </ButtonGroup>
+                    </TableCell>
+                  </>
+                ) : (
+                  ""
+                )}
               </StyledTableRow>
             );
           })}

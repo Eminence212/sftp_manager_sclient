@@ -477,11 +477,11 @@ const CustomerList = ({ open, setOpen, match }) => {
           title={"Liste des clients"}
           handleClose={handleClose}
           handleShow={handleShow}
+          isAdmin={auth.isAdmin}
         >
           <GroupIcon fontSize="large" />
         </PageHeader>
         {!isFetching ? (
-     
           <DataTable
             data={customers}
             handleDelete={handleDelete}
@@ -489,6 +489,7 @@ const CustomerList = ({ open, setOpen, match }) => {
             handleDisable={handleDisable}
             handleEnable={handleEnable}
             handleValidation={handleValidation}
+            isAdmin={auth.isAdmin}
           />
         ) : (
           ""

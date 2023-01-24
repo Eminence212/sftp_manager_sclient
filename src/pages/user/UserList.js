@@ -386,6 +386,7 @@ const UserList = ({ open, setOpen }) => {
           title={"Liste des utilisateurs"}
           handleClose={handleClose}
           handleShow={handleShow}
+          isAdmin={auth.isAdmin}
         >
           <GroupIcon fontSize="large" />
         </PageHeader>
