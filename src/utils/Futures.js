@@ -38,3 +38,11 @@ export const formatDate = (input) => {
     }).format(date)
   );
 };
+export const dateFormat = (input) => {
+  const date = new Date(input);
+  return capitalize(
+    new Intl.DateTimeFormat("fr-FR", {
+      dateStyle: "full",
+    }).format(date)
+  );
+};

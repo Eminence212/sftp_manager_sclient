@@ -4,6 +4,9 @@ import Wrapper from "../wrapper/Wrapper";
 import Page from "../../components/layaout-page/Page";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
+import PersonIcon from "@mui/icons-material/Person";
+import MotionPhotosAutoIcon from "@mui/icons-material/MotionPhotosAuto";
 import { numStr } from "../../utils/Futures";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +19,9 @@ import {
   fetchAllUsers,
 } from "../../redux/actions/usersAction";
 import Loader from "../../components/Loader/Loader";
+import { Badge } from "@mui/material";
+import Themes from "../../utils/theme/Themes";
+
 const Dashboard = ({ open, setOpen }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -89,6 +95,63 @@ const Dashboard = ({ open, setOpen }) => {
                   <span className="cart_number">
                     {numStr(customers.length)}
                   </span>
+                </p>
+                <p
+                  style={{
+                    display: "flex",
+                    columnGap: "16px",
+                  }}
+                >
+                  <Themes primary={"#242a2b"} secondary={"#fabb00"}>
+                    <Badge
+                      badgeContent={
+                        customers.filter((item) => item.enable).length
+                      }
+                      color="primary"
+                      showZero
+                    >
+                      <PersonIcon
+                        sx={{
+                          color: "black",
+                          background: "#fabb00",
+                          borderRadius: "5px",
+                          padding: "5px",
+                        }}
+                      />
+                    </Badge>
+                    <Badge
+                      badgeContent={
+                        customers.filter((item) => !item.enable).length
+                      }
+                      color="primary"
+                      showZero
+                    >
+                      <PersonOffIcon
+                        sx={{
+                          color: "black",
+                          background: "#fabb00",
+                          borderRadius: "5px",
+                          padding: "5px",
+                        }}
+                      />
+                    </Badge>
+                    <Badge
+                      badgeContent={
+                        customers.filter((item) => item.autovalidation).length
+                      }
+                      color="primary"
+                      showZero
+                    >
+                      <MotionPhotosAutoIcon
+                        sx={{
+                          color: "black",
+                          background: "#fabb00",
+                          borderRadius: "5px",
+                          padding: "5px",
+                        }}
+                      />
+                    </Badge>
+                  </Themes>
                 </p>
               </div>
             </div>

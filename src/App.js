@@ -102,7 +102,15 @@ function App() {
           exact
           path="/validation"
           element={
-            isLogged ? isAdmin ? <Validation /> : <NotFound /> : <Login />
+            isLogged ? (
+              isAdmin ? (
+                <Validation open={open} setOpen={setOpen} />
+              ) : (
+                <NotFound />
+              )
+            ) : (
+              <Login />
+            )
           }
         />
       </Routes>

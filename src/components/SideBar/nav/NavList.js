@@ -47,13 +47,13 @@ const NavList = ({
       {menus.map((menu) => (
         <Item key={menu.id} {...menu} active={active} auth={auth} />
       ))}
-    
+
       <li>
         <Link to={"/validation"}>
-          <i className={`bx bx-list-check`}></i>
-          <span className="links_name">Intégration</span>
+          <i className={`bx bxs-hot`}></i>
+          <span className="links_name">Visualisation</span>
         </Link>
-        <span className="tooltip">Intégration</span>
+        <span className="tooltip">Visualisation</span>
       </li>
       {auth.isAdmin && (
         <li>

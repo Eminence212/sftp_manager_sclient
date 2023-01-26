@@ -180,7 +180,7 @@ const CustomerList = ({ open, setOpen, match }) => {
         }, 1000);
       } catch (error) {
         setIsLoading(false);
-        console.log({ error });
+
         error.response.data.msg &&
           setCustomer({
             ...customer,
@@ -190,7 +190,7 @@ const CustomerList = ({ open, setOpen, match }) => {
       }
     } else {
       // Update
-      console.log({ customer });
+
       try {
         setIsLoading(true);
         setShow(false);
