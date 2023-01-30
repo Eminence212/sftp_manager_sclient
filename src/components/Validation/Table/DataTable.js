@@ -12,6 +12,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
@@ -20,9 +21,11 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import PropTypes from "prop-types";
-
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import { dateFormat } from "../../../utils/Futures";
+import SendIcon from "@mui/icons-material/Send";
+import InfoIcon from "@mui/icons-material/Info";
 import "./style.css";
 //Castomisation des styles
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -34,6 +37,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    padding: 0,
   },
 }));
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -114,11 +118,19 @@ TablePaginationActions.propTypes = {
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
 };
-const DataTable = ({ data }) => {
+const DataTable = ({
+  data,
+  handleClick,
+  tab_name,
+  directory,
+  customer,
+  isAdmin,
+  handleClickOpenDialog,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [record, setRecord] = useState([]);
-
+  const { autovalidation } = customer;
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -134,6 +146,7 @@ const DataTable = ({ data }) => {
         : data
     );
   }, [page, rowsPerPage, data]);
+
   // Customers;
   return (
     <TableContainer component={Paper} elevation={0}>
@@ -143,6 +156,9 @@ const DataTable = ({ data }) => {
             <StyledTableCell align="center">#</StyledTableCell>
             <StyledTableCell align="left">Nom du fichier</StyledTableCell>
             <StyledTableCell align="left">Modification</StyledTableCell>
+            {!autovalidation && !isAdmin && (
+              <StyledTableCell align="left">Action</StyledTableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -166,7 +182,7 @@ const DataTable = ({ data }) => {
                   }}
                 >
                   <Avatar sx={{ width: 24, height: 24 }}>
-                    <TextSnippetIcon fontSize="small" color="success"/>
+                    <TextSnippetIcon fontSize="small" />
                   </Avatar>
                 </TableCell>
                 <TableCell align="left" sx={{ p: 0 }}>
@@ -174,6 +190,34 @@ const DataTable = ({ data }) => {
                 </TableCell>
 
                 <TableCell align="left">{dateFormat(modifyTime)}</TableCell>
+                {!autovalidation && !isAdmin && (
+                  <TableCell align="left">
+                    {tab_name === "source" ? (
+                      <Tooltip title="Détail">
+                        <IconButton
+                          disabled={directory !== "in"}
+                          color="success"
+                          size="small"
+                          onClick={() => handleClickOpenDialog(item)}
+                          // onClick={() => handleClick(name)}
+                        >
+                          <InfoIcon />
+                        </IconButton>
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title="Télécharger">
+                        <IconButton
+                          disabled={directory === "in"}
+                          color="success"
+                          size="small"
+                          onClick={() => handleClick(name)}
+                        >
+                          <CloudDownloadIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                  </TableCell>
+                )}
               </StyledTableRow>
             );
           })}

@@ -107,6 +107,10 @@ const Dashboard = ({ open, setOpen }) => {
                       badgeContent={
                         customers.filter((item) => item.enable).length
                       }
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
                       color="primary"
                       showZero
                     >
@@ -123,6 +127,10 @@ const Dashboard = ({ open, setOpen }) => {
                       badgeContent={
                         customers.filter((item) => !item.enable).length
                       }
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
                       color="primary"
                       showZero
                     >
@@ -139,6 +147,10 @@ const Dashboard = ({ open, setOpen }) => {
                       badgeContent={
                         customers.filter((item) => item.autovalidation).length
                       }
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
                       color="primary"
                       showZero
                     >

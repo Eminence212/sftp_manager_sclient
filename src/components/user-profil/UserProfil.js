@@ -91,7 +91,7 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
     try {
       setIsLoading(true);
 
-    await ApiBase.post(
+      await ApiBase.post(
         "/user/reset",
         {
           password,
@@ -165,7 +165,7 @@ const UserProfil = ({ open, handleDrawerClose, auth }) => {
                 />
                 <div>
                   <h6>{user.name}</h6>
-                  <p>{user.role === 1 ? "Administrateur" : "Utilisateur"} </p>
+                  <p>{user.role === 1 ? "Administrateur" : "Opérateur"} </p>
                 </div>
               </div>
             </div>
