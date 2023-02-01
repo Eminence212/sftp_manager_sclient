@@ -43,6 +43,7 @@ const initialState = {
   customer: "",
   createdAt: new Date(),
   directory: "",
+ 
 };
 const initialData = {
   destinationFiles: [],
@@ -126,7 +127,7 @@ const Validation = ({ open, setOpen }) => {
   };
   const fetchFiles = async () => {
     const response = await fetchAllCustomerFiles(token, dataFilter);
-    console.log({ response });
+    
     setRecordFiles({ ...recordFiles, ...response.data });
   };
   useEffect(() => {

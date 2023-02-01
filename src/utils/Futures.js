@@ -46,3 +46,24 @@ export const dateFormat = (input) => {
     }).format(date)
   );
 };
+export const formatPaiement = (input) => {
+  const { CdtTrfTxInf, Dbtr, DbtrAcct, ReqdExctnDt } = input;
+
+  return CdtTrfTxInf
+    ? CdtTrfTxInf.map((item) => {
+        const { Amt, Cdtr, CdtrAcct } = item;
+        return {
+          dateRemise: ReqdExctnDt ? ReqdExctnDt[0] : "",
+          nom: Cdtr[0]["Nm"][0],
+          compte: CdtrAcct[0]["Id"][0]["Othr"][0]["Id"][0],
+          montant: Amt[0]["InstdAmt"][0]["_"],
+          devise: Amt[0]["InstdAmt"][0]["$"]["Ccy"],
+          debuteur: {
+            nom: Dbtr ? Dbtr[0]["Nm"][0] : "",
+            compte: DbtrAcct ? DbtrAcct[0]["Id"][0]["Othr"][0]["Id"][0] : "",
+            devise: DbtrAcct ? DbtrAcct[0]["Ccy"][0] : "",
+          },
+        };
+      })
+    : [];
+};

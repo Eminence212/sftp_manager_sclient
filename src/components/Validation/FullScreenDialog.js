@@ -1,12 +1,20 @@
 import {
+  Alert,
   AppBar,
+  Avatar,
+  Badge,
   Button,
+  Chip,
+  Collapse,
   Dialog,
   Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
+  Paper,
   Slide,
   Toolbar,
   Typography,
@@ -17,6 +25,33 @@ import Themes from "../../utils/theme/Themes";
 import Loader from "../Loader/Loader";
 import { ApiBase } from "../../utils/config/ApiBase";
 import { useSelector } from "react-redux";
+import { convertDate } from "../../utils/Dates";
+import { styled } from "@mui/material/styles";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import { formatDate, formatPaiement } from "../../utils/Futures";
+const initialState = {
+  msgId: "",
+  initiateur: "",
+  nbreTrans: 0,
+  montant: 0.0,
+  initDate: "",
+  creanciers:[],
+};
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(2),
+  textAlign: "justify",
+  color: theme.palette.text.secondary,
+}));
+
+const EmptySource = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(2),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -28,26 +63,40 @@ const FullScreenDialog = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const token = useSelector((state) => state.token);
+  const [details, setDetails] = useState(initialState);
+  const { autovalidation } = item;
 
   const confirm = (customer, file_name, directory) => {
     handleClickCloseDialog();
     handleValidation(customer, file_name, directory);
   };
-  const showData = async (data) => {
+
+  const showData = async (body) => {
     try {
       setIsLoading(true);
-      const rep = await ApiBase.post(
-        "/customer/self_validation",
+      const response = await ApiBase.post(
+        "/customer/payement_detail",
         {
-          customer_name: data.customer,
-          file_name: data.name,
-          directory: data.directory,
+          customer_name: body.customer,
+          file_name: body.name,
+          directory: body.directory,
         },
         {
           headers: { Authorization: token },
         }
       );
-      console.log({ rep });
+      console.log(response.data);
+
+      setDetails({
+        ...details,
+        msgId: response.data[0]["GrpHdr"][0]["MsgId"][0],
+        initiateur:
+          response.data[0]["GrpHdr"][0]["InitgPty"][0]["Nm"][0].toUpperCase(),
+        nbreTrans: response.data[0]["GrpHdr"][0]["NbOfTxs"][0],
+        montant: response.data[0]["GrpHdr"][0]["CtrlSum"][0],
+        initDate: formatDate(response.data[0]["GrpHdr"][0]["CreDtTm"][0]),
+        creanciers: formatPaiement(response.data[0]["PmtInf"][0]),
+      });
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
@@ -56,8 +105,9 @@ const FullScreenDialog = ({
     }
   };
   useEffect(() => {
-    // showData(item);
-  }, []);
+    showData(item);
+  }, [item]);
+  console.log({ details });
 
   return (
     <Themes primary={"#242a2b"} secondary={"#fabb00"}>
@@ -82,25 +132,84 @@ const FullScreenDialog = ({
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                 {item.name}
               </Typography>
-              <Button
-                autoFocus
-                color="inherit"
-                onClick={() =>
-                  confirm(item.customer, item.name, item.directory)
-                }
-              >
-                Valider
-              </Button>
+              {!autovalidation && (
+                <Button
+                  autoFocus
+                  color="inherit"
+                  onClick={() =>
+                    confirm(item.customer, item.name, item.directory)
+                  }
+                >
+                  Valider
+                </Button>
+              )}
             </Toolbar>
           </AppBar>
-          <List>
-            <ListItem button>
-              <ListItemText primary="Phone ringtone" secondary="Titania" />
-            </ListItem>
-            <Divider />
-            <ListItem button>
+          <List dense={true}>
+            <ListItem>
               <ListItemText
-                primary="Default notification ringtone"
+                primary={
+                  <Typography variant="body1" sx={{ color: "#242a2b" }}>
+                    En-tête de la transaction
+                  </Typography>
+                }
+                secondary={
+                  <List dense={true}>
+                    <ListItem>
+                      <ListItemText
+                        primary={
+                          <Typography variant="body2" sx={{ color: "#242a2b" }}>
+                            IDENTIFIANT :
+                          </Typography>
+                        }
+                        secondary={details.msgId}
+                      />
+                      <ListItemText
+                        primary={
+                          <Typography variant="body2" sx={{ color: "#242a2b" }}>
+                            INITIATEUR :
+                          </Typography>
+                        }
+                        secondary={details.initiateur}
+                      />
+                      <ListItemText
+                        primary={
+                          <Typography variant="body2" sx={{ color: "#242a2b" }}>
+                            NOBRE DES TRANSACTIONS :
+                          </Typography>
+                        }
+                        secondary={details.nbreTrans}
+                      />
+                      <ListItemText
+                        primary={
+                          <Typography variant="body2" sx={{ color: "#242a2b" }}>
+                            MONTANT TOTAL :
+                          </Typography>
+                        }
+                        secondary={details.montant}
+                      />
+                      <ListItemText
+                        primary={
+                          <Typography variant="body2" sx={{ color: "#242a2b" }}>
+                            DATE D'INITIATION :
+                          </Typography>
+                        }
+                        secondary={details.initDate}
+                      />
+                    </ListItem>
+                  </List>
+                }
+              />
+            </ListItem>
+
+            <Divider />
+            <ListItem>
+              <ListItemText
+                primary={
+                  <Typography variant="body1" sx={{ color: "#242a2b" }}>
+                    Informations des paiements
+                  </Typography>
+                }
                 secondary="Tethys"
               />
             </ListItem>

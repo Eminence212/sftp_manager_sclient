@@ -156,9 +156,7 @@ const DataTable = ({
             <StyledTableCell align="center">#</StyledTableCell>
             <StyledTableCell align="left">Nom du fichier</StyledTableCell>
             <StyledTableCell align="left">Modification</StyledTableCell>
-            {!autovalidation && !isAdmin && (
-              <StyledTableCell align="left">Action</StyledTableCell>
-            )}
+            {!isAdmin && <StyledTableCell align="left">Action</StyledTableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -190,7 +188,7 @@ const DataTable = ({
                 </TableCell>
 
                 <TableCell align="left">{dateFormat(modifyTime)}</TableCell>
-                {!autovalidation && !isAdmin && (
+                {!isAdmin && (
                   <TableCell align="left">
                     {tab_name === "source" ? (
                       <Tooltip title="Détail">
@@ -198,7 +196,9 @@ const DataTable = ({
                           disabled={directory !== "in"}
                           color="success"
                           size="small"
-                          onClick={() => handleClickOpenDialog(item)}
+                          onClick={() =>
+                            handleClickOpenDialog({ ...item, autovalidation })
+                          }
                           // onClick={() => handleClick(name)}
                         >
                           <InfoIcon />
