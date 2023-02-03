@@ -29,13 +29,14 @@ import { convertDate } from "../../utils/Dates";
 import { styled } from "@mui/material/styles";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import { formatDate, formatPaiement } from "../../utils/Futures";
+import TransacTable from "./TransacTable";
 const initialState = {
   msgId: "",
   initiateur: "",
   nbreTrans: 0,
   montant: 0.0,
   initDate: "",
-  creanciers:[],
+  creanciers: [],
 };
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -85,8 +86,6 @@ const FullScreenDialog = ({
           headers: { Authorization: token },
         }
       );
-      console.log(response.data);
-
       setDetails({
         ...details,
         msgId: response.data[0]["GrpHdr"][0]["MsgId"][0],
@@ -107,7 +106,6 @@ const FullScreenDialog = ({
   useEffect(() => {
     showData(item);
   }, [item]);
-  console.log({ details });
 
   return (
     <Themes primary={"#242a2b"} secondary={"#fabb00"}>
@@ -210,7 +208,7 @@ const FullScreenDialog = ({
                     Informations des paiements
                   </Typography>
                 }
-                secondary="Tethys"
+                secondary={<TransacTable data={details.creanciers} />}
               />
             </ListItem>
           </List>
