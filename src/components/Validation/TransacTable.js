@@ -143,10 +143,10 @@ const TransacTable = ({ data }) => {
             <StyledTableCell align="left">Date remise</StyledTableCell>
             <StyledTableCell align="left">Donneur d'ordre</StyledTableCell>
             <StyledTableCell align="left">
-              Compte du donneur d'ordre
+              Compte à débuter
             </StyledTableCell>
             <StyledTableCell align="left">Créancier</StyledTableCell>
-            <StyledTableCell align="left">Compte créancier</StyledTableCell>
+            <StyledTableCell align="left">Compte à créditer</StyledTableCell>
             <StyledTableCell align="left">Montant</StyledTableCell>
           </TableRow>
         </TableHead>

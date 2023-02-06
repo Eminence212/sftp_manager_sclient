@@ -148,6 +148,7 @@ const DataTable = ({
   }, [page, rowsPerPage, data]);
 
   // Customers;
+  console.log({ record, customer });
   return (
     <TableContainer component={Paper} elevation={0}>
       <Table stickyHeader aria-label="sticky table">
@@ -199,7 +200,6 @@ const DataTable = ({
                           onClick={() =>
                             handleClickOpenDialog({ ...item, autovalidation })
                           }
-                          // onClick={() => handleClick(name)}
                         >
                           <InfoIcon />
                         </IconButton>
@@ -207,10 +207,12 @@ const DataTable = ({
                     ) : (
                       <Tooltip title="Télécharger">
                         <IconButton
-                          disabled={directory === "in"}
+                          disabled={directory === "in" || autovalidation}
                           color="success"
                           size="small"
-                          onClick={() => handleClick(name)}
+                          onClick={() =>
+                            handleClick(customer.name, item.name, directory)
+                          }
                         >
                           <CloudDownloadIcon />
                         </IconButton>

@@ -1,20 +1,12 @@
 import {
-  Alert,
   AppBar,
-  Avatar,
-  Badge,
   Button,
-  Chip,
-  Collapse,
   Dialog,
   Divider,
-  Grid,
   IconButton,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
-  Paper,
   Slide,
   Toolbar,
   Typography,
@@ -25,9 +17,7 @@ import Themes from "../../utils/theme/Themes";
 import Loader from "../Loader/Loader";
 import { ApiBase } from "../../utils/config/ApiBase";
 import { useSelector } from "react-redux";
-import { convertDate } from "../../utils/Dates";
-import { styled } from "@mui/material/styles";
-import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+
 import { formatDate, formatPaiement } from "../../utils/Futures";
 import TransacTable from "./TransacTable";
 const initialState = {
@@ -38,21 +28,7 @@ const initialState = {
   initDate: "",
   creanciers: [],
 };
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: "justify",
-  color: theme.palette.text.secondary,
-}));
 
-const EmptySource = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });

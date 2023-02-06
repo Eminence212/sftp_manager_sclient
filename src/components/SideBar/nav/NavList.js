@@ -50,7 +50,7 @@ const NavList = ({
 
       <li>
         <Link to={"/validation"}>
-          <i className={`bx bxs-hot`}></i>
+          <i className={`bx bx-bulb`}></i>
           <span className="links_name">Visualisation</span>
         </Link>
         <span className="tooltip">Visualisation</span>

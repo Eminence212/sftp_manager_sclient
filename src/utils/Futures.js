@@ -53,7 +53,7 @@ export const formatPaiement = (input) => {
     ? CdtTrfTxInf.map((item) => {
         const { Amt, Cdtr, CdtrAcct } = item;
         return {
-          dateRemise: ReqdExctnDt ? dateFormat(ReqdExctnDt[0]) : "",
+          dateRemise: ReqdExctnDt ? formatDate(ReqdExctnDt[0]) : "",
           nom: Cdtr[0]["Nm"][0],
           compte: CdtrAcct[0]["Id"][0]["Othr"][0]["Id"][0],
           montant: Amt[0]["InstdAmt"][0]["_"],

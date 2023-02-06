@@ -23,7 +23,6 @@ import swal from "@sweetalert/with-react";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import {
-  dispatchGetAllCustomerFiles,
   dispatchGetAllCustomers,
   fetchAllCustomerFiles,
   fetchAllCustomers,
@@ -141,7 +140,7 @@ const Validation = ({ open, setOpen }) => {
 
       setTimeout(async () => {
         setIsLoading(false);
-      }, 1000);
+      }, 3000);
     } catch (error) {
       setIsLoading(false);
     }
@@ -167,6 +166,7 @@ const Validation = ({ open, setOpen }) => {
       setIsLoading(false);
     }, 1000);
   };
+
   const handleValidation = async (customer, file_name, directory) => {
     const msg = `Êtes-vous sûr de vouloir ${
       directory === "in"
