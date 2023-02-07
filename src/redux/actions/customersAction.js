@@ -1,5 +1,4 @@
 import { ApiBase } from "../../utils/config/ApiBase";
-import { formatDate } from "../../utils/Futures";
 import ACTIONS from "./index";
 
 export const fetchAllCustomers = async (token) => {
