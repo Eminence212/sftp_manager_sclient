@@ -218,7 +218,10 @@ const DataTable = ({
                 <StyledTableCell align="left">Actions</StyledTableCell>
               </>
             ) : (
-              ""
+              <>
+                <StyledTableCell align="left">Validation</StyledTableCell>
+                <StyledTableCell align="left">Status</StyledTableCell>
+              </>
             )}
           </TableRow>
         </TableHead>
@@ -340,7 +343,29 @@ const DataTable = ({
                     </TableCell>
                   </>
                 ) : (
-                  ""
+                  <>
+                    <TableCell align="center">
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Android12Switch
+                              sx={{ m: 1 }}
+                              checked={autovalidation}
+                            />
+                          }
+                          label={autovalidation ? "Auto" : "Manuel"}
+                        />
+                      </FormGroup>
+                    </TableCell>
+                    <TableCell align="left">
+                      <span
+                        className={enable ? "mode mode_on" : "mode mode_off"}
+                      >
+                        {enable ? "Actif" : "Inactif"}
+                      </span>
+                    </TableCell>
+                
+                  </>
                 )}
               </StyledTableRow>
             );
