@@ -5,6 +5,5 @@ export const ApiBase = axios.create({
   baseURL: "https://api-sftpmanager.onerender.com/api/v1",
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
   },
 });
