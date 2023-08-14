@@ -51,6 +51,9 @@
 .card_inner {
   border-bottom: #fff 0.3125rem solid;
 }
+.card_inner2 {
+  border-bottom: #000000 0.3125rem solid;
+}
 .card_inner .cart_title {
   color: #ededed;
   font-size: 1.125rem;

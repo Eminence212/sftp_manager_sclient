@@ -22,7 +22,7 @@ export const searchCustomers = async (token, query) => {
 };
 export const fetchAllCustomerFiles = async (token, query) => {
   const { customer, createdAt, directory } = query;
- 
+
   const res = await ApiBase.post(
     `/customer/files`,
     { customer, createdAt, directory },
@@ -35,6 +35,23 @@ export const fetchAllCustomerFiles = async (token, query) => {
 export const dispatchGetAllCustomerFiles = (res) => {
   return {
     type: ACTIONS.GET_ALL_CUSTOMER_FILES,
+    payload: res.data,
+  };
+};
+export const fetchAllCustomerMonitoring = async (token, createdAt) => {
+  const res = await ApiBase.post(
+    `/customer/monitoring`,
+    { createdAt },
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  return res;
+};
+export const dispatchGetAllCustomerMonitoring = (res) => {
+  return {
+    type: ACTIONS.GET_ALL_CUSTOMERS_MONITORING,
     payload: res.data,
   };
 };
