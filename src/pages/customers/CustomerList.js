@@ -58,7 +58,7 @@ const CustomerList = ({ open, setOpen, match }) => {
   const [callback, setCallback] = useState(false);
   const [show, setShow] = useState(false);
   const [isSave, setIsSave] = useState(false);
-  const [isSearched, setIsSearched] = useState(false);
+  const [, setIsSearched] = useState(false);
   const [customer, setCustomer] = useState({
     ...initialState,
     userId: auth.user.id,

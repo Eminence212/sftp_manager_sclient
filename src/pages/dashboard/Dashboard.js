@@ -29,7 +29,6 @@ import { Badge } from "@mui/material";
 import Themes from "../../utils/theme/Themes";
 import { formatMonitoringData } from "../../utils/Monitoring";
 import DataTable from "./DataTable";
-import Clock from "react-clock";
 
 const Dashboard = ({ open, setOpen }) => {
   const dispatch = useDispatch();
