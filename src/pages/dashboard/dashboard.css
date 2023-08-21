@@ -34,7 +34,6 @@
   font-weight: bold;
   font-size: 1.5625rem;
   padding-bottom: 0.5rem;
-  
 }
 /* Second card */
 .card {
@@ -66,4 +65,19 @@
   font-weight: bold;
   font-size: 1.5625rem;
   padding-bottom: 0.5rem;
+}
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  width: 40%;
+  height: 40%;
+}
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  background: #fff;
+  padding: 1rem;
+
 }

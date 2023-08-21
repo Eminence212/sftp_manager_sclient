@@ -29,6 +29,7 @@ import { Badge } from "@mui/material";
 import Themes from "../../utils/theme/Themes";
 import { formatMonitoringData } from "../../utils/Monitoring";
 import DataTable from "./DataTable";
+import RadarChart from "./RadarChart";
 
 const Dashboard = ({ open, setOpen }) => {
   const dispatch = useDispatch();
@@ -67,7 +68,6 @@ const Dashboard = ({ open, setOpen }) => {
 
   useEffect(() => {
     const interval = setInterval(() => setMonitoringDate(new Date()), 1000);
-
     return () => {
       clearInterval(interval);
     };
@@ -255,6 +255,7 @@ const Dashboard = ({ open, setOpen }) => {
           </div>
           <div className="main__cards">
             <DataTable rows={rows} />
+            <RadarChart rows={rows} />
           </div>
         </div>
       </Page>
