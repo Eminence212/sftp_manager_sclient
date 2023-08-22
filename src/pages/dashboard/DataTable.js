@@ -40,7 +40,7 @@ export default function DataTable({ rows }) {
     <div
       style={{
         height: 615,
-        width: "50%",
+        width: "60%",
         marginTop: "1rem",
         background: "#fff",
       }}
