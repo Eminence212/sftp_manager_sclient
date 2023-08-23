@@ -364,7 +364,6 @@ const DataTable = ({
                         {enable ? "Actif" : "Inactif"}
                       </span>
                     </TableCell>
-                
                   </>
                 )}
               </StyledTableRow>
