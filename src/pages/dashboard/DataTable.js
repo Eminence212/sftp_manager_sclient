@@ -26,16 +26,17 @@ const columns = [
 ];
 
 export default function DataTable({ rows }) {
-   const theme = createTheme({
-     palette: {
-       primary: {
-         main: "#fabb00",
-       },
-       secondary: {
-         main: "#242a2b",
-       },
-     },
-   });
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#fabb00",
+      },
+      secondary: {
+        main: "#242a2b",
+      },
+    },
+  });
+
   return (
     <div
       style={{
@@ -45,7 +46,6 @@ export default function DataTable({ rows }) {
         background: "#fff",
       }}
     >
-
       <ThemeProvider theme={theme}>
         <DataGrid
           rows={rows}

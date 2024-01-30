@@ -133,7 +133,6 @@ const Validation = ({ open, setOpen }) => {
   }, [token, auth.isAdmin, dispatch, auth.user.id]);
 
   const handleFilter = async () => {
-    console.log("Filter");
     try {
       setIsLoading(true);
       fetchFiles();

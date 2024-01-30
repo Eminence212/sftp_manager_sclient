@@ -7,7 +7,7 @@ const RadarChart = ({ rows }) => {
     const inbox = [];
     const archives = [];
     const erreurs = [];
-    console.log(data);
+
     for (let i = 0; i < data.length; i++) {
       labels.push(data[i].client);
       inbox.push(data[i].inbox);
