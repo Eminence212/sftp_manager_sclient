@@ -42,7 +42,6 @@ const initialState = {
   customer: "",
   createdAt: new Date(),
   directory: "",
- 
 };
 const initialData = {
   destinationFiles: [],
@@ -120,20 +119,21 @@ const Validation = ({ open, setOpen }) => {
         )
   );
 
-  const fetchData = async () => {
-    const response = await fetchAllCustomers(token);
-    dispatch(dispatchGetAllCustomers(response));
-  };
   const fetchFiles = async () => {
     const response = await fetchAllCustomerFiles(token, dataFilter);
-    
+
     setRecordFiles({ ...recordFiles, ...response.data });
   };
   useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetchAllCustomers(token);
+      dispatch(dispatchGetAllCustomers(response));
+    };
     fetchData();
   }, [token, auth.isAdmin, dispatch, auth.user.id]);
 
   const handleFilter = async () => {
+    console.log("Filter");
     try {
       setIsLoading(true);
       fetchFiles();

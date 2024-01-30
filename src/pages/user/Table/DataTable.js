@@ -123,6 +123,7 @@ TablePaginationActions.propTypes = {
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
 };
+
 const DataTable = ({
   data,
   handleDelete,

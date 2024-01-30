@@ -19,15 +19,19 @@ function App() {
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     const ref_token = localStorage.getItem("refresh_token");
-    if (firstLogin && ref_token) {
-      const getToken = async () => {
-        const res = await ApiBase.post("/user/refresh_token", {
-          refresh_token: ref_token,
-        });
+    try {
+      if (firstLogin && ref_token) {
+        const getToken = async () => {
+          const res = await ApiBase.post("/user/refresh_token", {
+            refresh_token: ref_token,
+          });
 
-        dispatch({ type: "GET_TOKEN", payload: res.data.access_token });
-      };
-      getToken();
+          dispatch({ type: "GET_TOKEN", payload: res.data.access_token });
+        };
+        getToken();
+      }
+    } catch (error) {
+      console.error({ error });
     }
   }, [auth.isLogged, dispatch]);
 
