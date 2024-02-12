@@ -148,7 +148,7 @@ const DataTable = ({
   }, [page, rowsPerPage, data]);
 
   // Customers;
-  console.log({ record, customer });
+
   return (
     <TableContainer component={Paper} elevation={0}>
       <Table stickyHeader aria-label="sticky table">

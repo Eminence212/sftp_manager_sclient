@@ -38,6 +38,15 @@ export const formatDate = (input) => {
     }).format(date)
   );
 };
+export const formatShortDate = (input) => {
+  const date = new Date(input);
+  return capitalize(
+    new Intl.DateTimeFormat("fr-FR", {
+      dateStyle: "short",
+      timeStyle: "short",
+    }).format(date)
+  );
+};
 export const dateFormat = (input) => {
   const date = new Date(input);
   return capitalize(
@@ -47,22 +56,25 @@ export const dateFormat = (input) => {
   );
 };
 export const formatPaiement = (input) => {
-  const { CdtTrfTxInf, Dbtr, DbtrAcct, ReqdExctnDt } = input;
+  const { CdtTrfTxInf,DbtrAgt, Dbtr, DbtrAcct, ReqdExctnDt } = input;
 
   return CdtTrfTxInf
     ? CdtTrfTxInf.map((item) => {
-        const { Amt, Cdtr, CdtrAcct } = item;
+        const { Amt, Cdtr, CdtrAcct,CdtrAgt, RmtInf } = item;
+ 
         return {
-          dateRemise: ReqdExctnDt ? formatDate(ReqdExctnDt[0]) : "",
+          dateRemise: ReqdExctnDt ? formatShortDate(ReqdExctnDt[0]) : "",
           nom: Cdtr[0]["Nm"][0],
-          compte: CdtrAcct[0]["Id"][0]["Othr"][0]["Id"][0],
+          compte:CdtrAgt[0]["BrnchId"][0]["Id"][0] +"-"+ CdtrAcct[0]["Id"][0]["Othr"][0]["Id"][0],
           montant: Amt[0]["InstdAmt"][0]["_"],
           devise: Amt[0]["InstdAmt"][0]["$"]["Ccy"],
           debuteur: {
             nom: Dbtr ? Dbtr[0]["Nm"][0] : "",
-            compte: DbtrAcct ? DbtrAcct[0]["Id"][0]["Othr"][0]["Id"][0] : "",
+            compte: DbtrAcct ? DbtrAgt[0]["BrnchId"][0]["Id"][0] +"-"+DbtrAcct[0]["Id"][0]["Othr"][0]["Id"][0] : "",
             devise: DbtrAcct ? DbtrAcct[0]["Ccy"][0] : "",
+          
           },
+            motif :RmtInf ? RmtInf[0]["Ustrd"][0] : ""
         };
       })
     : [];

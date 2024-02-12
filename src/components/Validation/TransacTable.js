@@ -141,18 +141,20 @@ const TransacTable = ({ data }) => {
           <TableRow>
             <StyledTableCell align="center">#</StyledTableCell>
             <StyledTableCell align="left">Date remise</StyledTableCell>
-            <StyledTableCell align="left">Donneur d'ordre</StyledTableCell>
-            <StyledTableCell align="left">
+              <StyledTableCell align="left">
               Compte à débuter
             </StyledTableCell>
+            <StyledTableCell align="left">Donneur d'ordre</StyledTableCell>
+              <StyledTableCell align="left">Compte à créditer</StyledTableCell>
             <StyledTableCell align="left">Créancier</StyledTableCell>
-            <StyledTableCell align="left">Compte à créditer</StyledTableCell>
+            <StyledTableCell align="left">Motif</StyledTableCell>
             <StyledTableCell align="left">Montant</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {record.map((item, index) => {
-            const { dateRemise, debuteur, devise, montant, nom, compte } = item;
+            const { dateRemise, debuteur, devise, montant, nom, compte,motif } = item;
+        
             return (
               <StyledTableRow
                 key={index}
@@ -164,12 +166,14 @@ const TransacTable = ({ data }) => {
               >
                 <TableCell align="center">{index + 1}</TableCell>
                 <TableCell align="left"> {dateRemise} </TableCell>
-                <TableCell align="left"> {debuteur.nom} </TableCell>
-                <TableCell align="left">
+                 <TableCell align="left">
                   {`${debuteur.compte} ${debuteur.devise}`}
                 </TableCell>
-                <TableCell align="left">{nom}</TableCell>
+                <TableCell align="left"> {debuteur.nom} </TableCell>
                 <TableCell align="left"> {`${compte} ${devise}`} </TableCell>
+                <TableCell align="left">{nom}</TableCell>
+           
+                <TableCell align="left">{motif}</TableCell>
                 <TableCell align="left">{montant}</TableCell>
               </StyledTableRow>
             );

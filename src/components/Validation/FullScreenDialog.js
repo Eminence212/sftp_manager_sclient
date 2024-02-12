@@ -62,6 +62,8 @@ const FullScreenDialog = ({
           headers: { Authorization: token },
         }
       );
+
+      
       setDetails({
         ...details,
         msgId: response.data[0]["GrpHdr"][0]["MsgId"][0],

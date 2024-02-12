@@ -105,6 +105,7 @@ const Validation = ({ open, setOpen }) => {
   };
   const handleClickOpenDialog = (item) => {
     const body = { ...dataFilter, ...item };
+  
     setItem({ ...item, ...body });
     setShow(true);
   };
@@ -207,7 +208,6 @@ const Validation = ({ open, setOpen }) => {
       <Wrapper open={open} setOpen={setOpen} title={"Visualisation"}>
         <Page>
           <Loader displayed={isLoading} />
-
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Themes primary={"#242a2b"} secondary={"#fabb00"}>
